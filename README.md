@@ -25,6 +25,7 @@ Both modules are fully functional with create, read, update, and delete (CRUD) o
 ---
 
 ## 🗂 Project Structure
+```
 backend/
 server.py
 router.py
@@ -43,6 +44,7 @@ locations.js
 assets.html
 locations.html
 ams.db
+```
 
 ## How to Set Up and Run the Application
 
