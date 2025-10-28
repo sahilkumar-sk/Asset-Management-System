@@ -51,7 +51,7 @@ ams.db
 ### 1️ - Clone the Repository
 ```
 git clone https://github.com/sahilkumar-sk/Asset-Management-System.git
-cd AMS Project
+cd Asset-Management-System
 ```
 
 ### 2️ - Create the Database
