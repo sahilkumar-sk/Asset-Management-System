@@ -1,6 +1,6 @@
 // AMS Employees – full CRUD + filters + CSV export
 $(document).ready(function () {
-  console.log("✅ employees.js loaded");
+  console.log("employees.js loaded");
 
   const $rows = $('#empRows');
   const $form = $('#empForm');
@@ -52,12 +52,12 @@ $(document).ready(function () {
 
   // -------- Load Employees --------
   async function loadEmployees() {
-    console.log("🚀 Loading employees...");
+    console.log("Loading employees...");
     try {
       const { data = [] } = await fetchJSON(`${API}/employees`);
       render(data);
     } catch (e) {
-      console.error("❌ loadEmployees error:", e);
+      console.error("loadEmployees error:", e);
       Swal.fire('Error', e.message || 'Failed to load employees', 'error');
     }
   }

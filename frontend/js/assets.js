@@ -1,6 +1,6 @@
 // AMS Assets – full CRUD + filters + assign + CSV (fixed & optimized)
 $(document).ready(function () {
-  console.log("✅ assets.js loaded");
+  console.log("assets.js loaded");
 
   const $rows = $('#assetRows');
   const $status = $('#fltAssetStatus');
@@ -71,7 +71,7 @@ $(document).ready(function () {
 
   // ------- Load Assets -------
   async function loadAssets() {
-    console.log("🚀 Loading assets...");
+    console.log("Loading assets...");
     try {
       const params = new URLSearchParams();
       const status = $status.val();
@@ -84,7 +84,7 @@ $(document).ready(function () {
       console.log("Received assets:", data);
       render(data);
     } catch (e) {
-      console.error("❌ loadAssets error:", e);
+      console.error("loadAssets error:", e);
       Swal.fire('Error', e.message || 'Failed to load assets', 'error');
     }
   }

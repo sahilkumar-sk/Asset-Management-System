@@ -33,17 +33,28 @@ http_helpers.py
 utils.py
 db.py
 db_setup.py
-assets.py
-locations.py
+repositories/
+    assets.py
+    employees.py
+    locations.py
+    users.py
 frontend/
 css/
-ams-theme.css
+    ams-theme.css
+    auth.css
 js/
-assets.js
-locations.js
+    assets.js
+    locations.js
+    dashboard.js
+    employees.js
+    login.js
+    register.js
 assets.html
 locations.html
-ams.db
+employees.html
+dashboard.html
+login.html
+register.html
 ```
 
 ## How to Set Up and Run the Application

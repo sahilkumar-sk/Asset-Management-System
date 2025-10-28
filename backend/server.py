@@ -176,9 +176,9 @@ if __name__ == '__main__':
     FRONTEND_PATH = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dashboard.html')
     FRONTEND_URL = f'file:///{os.path.abspath(FRONTEND_PATH)}'.replace('\\', '/')
 
-    print("✅ AMS backend running at http://localhost:8000")
-    print("📂 Database:", DB_PATH)
-    print("🌐 Opening AMS Dashboard...")
+    print("AMS backend running at http://localhost:8000")
+    print("Database:", DB_PATH)
+    print("Opening AMS Dashboard...")
 
     # Launch frontend automatically
     webbrowser.open(FRONTEND_URL)
