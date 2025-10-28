@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employees | AMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/ams-theme.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="assets.html">Assets</a>
+      <a href="employees.html" class="active">Employees</a>
+      <a href="locations.html">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Employees</h2>
+
+    <form id="empForm" class="filters-bar">
+      <input name="name" placeholder="Name *" required />
+      <input name="department" placeholder="Department" />
+      <input name="email" type="email" placeholder="Email" />
+      <input name="phone" placeholder="Phone" />
+      <input name="location_id" placeholder="Location ID" />
+      <select name="status"><option value="active">active</option><option value="inactive">inactive</option></select>
+      <div class="actions"><button type="submit" class="btn-primary">Add</button></div>
+    </form>
+
+    <section class="table-section">
+      <table id="tblEmployees">
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Department</th><th>Location</th>
+            <th>Status</th><th>Email</th><th>Phone</th><th>Assigned</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="empRows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>const API='http://localhost:8000';</script>
+  <script src="js/session.js"></script>
+  <script>requireAuth();</script>
+  <script>
+    document.getElementById('logout').addEventListener('click',(e)=>{
+      e.preventDefault(); clearAuth(); location.href='login.html';
+    });
+  </script>
+  <script src="js/employees.js"></script>
+</body>
+</html>

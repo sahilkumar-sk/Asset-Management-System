@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assets | AMS</title>
+  <link rel="stylesheet" href="css/ams-theme.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="assets.html" class="active">Assets</a>
+      <a href="employees.html">Employees</a>
+      <a href="locations.html">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Assets</h2>
+    <div class="filters-bar">
+      <select id="fltAssetID"><option value="">Asset ID: All</option></select>
+      <select id="fltAssetType"><option value="">Asset Type: All</option></select>
+      <select id="fltAssetGroup"><option value="">Asset Group: All</option></select>
+      <select id="fltAssetStatus">
+        <option value="">Status: All</option>
+        <option value="available">Available</option>
+        <option value="in_use">In Use</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="damaged">Damaged</option>
+      </select>
+      <input type="date" id="fltDate" />
+      <div class="actions">
+        <button id="btnAdd" class="btn-primary">Add New</button>
+        <button id="btnExport" class="btn-secondary">Export</button>
+      </div>
+    </div>
+
+    <section class="table-section">
+      <table id="tblAssets">
+        <thead>
+          <tr>
+            <th>Asset ID</th><th>Asset Name</th><th>Category</th><th>Sub Category</th>
+            <th>Location</th><th>Status</th><th>Assigned To</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="assetRows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>const API='http://localhost:8000';</script>
+  <script src="js/session.js"></script>
+  <script>requireAuth();</script>
+  <script>
+    document.getElementById('logout').addEventListener('click',(e)=>{
+      e.preventDefault(); clearAuth(); location.href='login.html';
+    });
+  </script>
+  <script src="js/assets.js"></script>
+</body>
+</html>

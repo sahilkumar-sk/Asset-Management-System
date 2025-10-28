@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | AMS Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/ams-theme.css" />
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="assets.html">Assets</a>
+      <a href="employees.html">Employees</a>
+      <a href="locations.html">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Overview</h2>
+    <div class="filters-bar" style="gap:12px;">
+      <div class="muted">Live view of assets</div>
+      <div class="actions"><button id="btnRefresh" class="btn-secondary">Refresh</button></div>
+    </div>
+
+    <section class="grid">
+      <div class="kpi" id="kpiTotal">Total: –</div>
+      <div class="kpi" id="kpiAssigned">Assigned: –</div>
+      <div class="kpi" id="kpiUnassigned">Unassigned: –</div>
+      <div class="kpi" id="kpiMaint">Maintenance: –</div>
+      <div class="kpi" id="kpiDamaged">Damaged: –</div>
+    </section>
+
+    <section class="grid" style="grid-template-columns:repeat(2,minmax(280px,1fr));">
+      <div class="table-section card">
+        <h3 style="margin:0 0 12px;">Assets by Category & Status</h3>
+        <canvas id="chartByCategory"></canvas>
+      </div>
+      <div class="table-section card">
+        <h3 style="margin:0 0 12px;">Status Distribution</h3>
+        <canvas id="chartStatus"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script>const API='http://localhost:8000';</script>
+  <script src="js/session.js"></script>
+  <script>requireAuth();</script>
+  <script>
+    document.getElementById('logout').addEventListener('click', (e)=>{
+      e.preventDefault(); clearAuth(); location.href='login.html';
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

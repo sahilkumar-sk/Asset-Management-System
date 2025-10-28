@@ -1,153 +1,187 @@
-# backend/server.py
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json, urllib.parse, sqlite3, hashlib, os, sys
+import urllib.parse
+from router import Router
+from http_helpers import send_json, read_json
+from repositories import users, locations, assets, employees
+from services import dashboard
 
-# -------------------------------
-# Config: absolute DB path + helpers
-# -------------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "ams.db")
+router = Router()
 
-def password_hash(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+# ---- route registrations ----
+router.add('GET',  r'/',                      lambda h,g: send_json(h,200,{'status':'success','message':'AMS backend is running'}))
+router.add('GET',  r'/dashboard/summary',     lambda h,g: send_json(h,200,{'status':'success','data':dashboard.summary()}))
+router.add('GET',  r'/dashboard/by-category', lambda h,g: send_json(h,200,{'status':'success','data':dashboard.by_category()}))
 
-def get_conn():
-    """Return a connection and ensure the users table exists."""
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            FirstName TEXT NOT NULL,
-            LastName  TEXT NOT NULL,
-            Email     TEXT UNIQUE NOT NULL,
-            number    TEXT,
-            password  TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    return conn
+# Locations
+def get_locations(h, g):       send_json(h,200,{'status':'success','data':locations.list_locations()})
+def get_location(h, g):
+    loc = locations.get_location(int(g[0])); 
+    send_json(h,200,{'status':'success','data':loc}) if loc else send_json(h,404,{'status':'error','message':'Location not found'})
+def post_location(h, g):
+    data = read_json(h); name = (data.get('name') or '').strip()
+    if not name: return send_json(h,400,{'status':'error','message':'Name is required.'})
+    row = locations.create_location(name, data.get('address'), data.get('floor'), data.get('room'))
+    send_json(h,201,{'status':'success','message':'Location added successfully.','data':row})
+def put_location(h, g):
+    data = read_json(h); ok = locations.update_location(int(g[0]), {k:v for k,v in data.items() if v is not None})
+    send_json(h,200,{'status':'success','message':'Location updated.'}) if ok else send_json(h,404,{'status':'error','message':'Location not found'})
+def del_location(h, g):
+    ok = locations.delete_location(int(g[0]))
+    send_json(h,200,{'status':'success','message':'Location deleted.'}) if ok else send_json(h,404,{'status':'error','message':'Location not found'})
 
-class RequestHandler(BaseHTTPRequestHandler):
-    # CORS
-    def end_headers(self):
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-        super().end_headers()
+router.add('GET',    r'/locations',          get_locations)
+router.add('GET',    r'/locations/(\d+)',    get_location)
+router.add('POST',   r'/locations',          post_location)
+router.add('PUT',    r'/locations/(\d+)',    put_location)
+router.add('DELETE', r'/locations/(\d+)',    del_location)
 
+# ---------- ASSETS ----------
+def get_assets(h, g):
+    q = urllib.parse.parse_qs(urllib.parse.urlparse(h.path).query)
+    status = q.get('status', [''])[0] or None
+    location_id = q.get('location_id', [''])[0] or None
+    data = assets.list_assets(status=status, location_id=location_id)
+    send_json(h, 200, {'status':'success','data':data})
+
+def get_asset(h, g):
+    row = assets.get_asset(int(g[0]))
+    return send_json(h,200,{'status':'success','data':row}) if row else send_json(h,404,{'status':'error','message':'Asset not found'})
+
+def post_asset(h, g):
+    d = read_json(h)
+    name     = (d.get('name') or '').strip()
+    category = (d.get('category') or '').strip()
+    if not name or not category:
+        return send_json(h,400,{'status':'error','message':'Name and category are required.'})
+    row = assets.create_asset(
+        name=name,
+        category=category,
+        purchase_date=d.get('purchase_date'),
+        cost=d.get('cost'),
+        status=d.get('status','available'),
+        serial_no=d.get('serial_no'),
+        notes=d.get('notes'),
+        location_id=d.get('location_id'),
+        assigned_to=d.get('assigned_to')
+    )
+    send_json(h,201,{'status':'success','message':'Asset added successfully.','data':row})
+
+def put_asset(h, g):
+    d = read_json(h)
+    ok = assets.update_asset(int(g[0]), {k:v for k,v in d.items() if v is not None})
+    send_json(h,200,{'status':'success','message':'Asset updated.'}) if ok else send_json(h,404,{'status':'error','message':'Asset not found'})
+
+def del_asset(h, g):
+    ok = assets.delete_asset(int(g[0]))
+    send_json(h,200,{'status':'success','message':'Asset deleted.'}) if ok else send_json(h,404,{'status':'error','message':'Asset not found'})
+
+router.add('GET',    r'/assets',        get_assets)
+router.add('GET',    r'/assets/(\d+)',  get_asset)
+router.add('POST',   r'/assets',        post_asset)
+router.add('PUT',    r'/assets/(\d+)',  put_asset)
+router.add('DELETE', r'/assets/(\d+)',  del_asset)
+
+# ---------- EMPLOYEES ----------
+def get_employees(h, g):
+    q = urllib.parse.parse_qs(urllib.parse.urlparse(h.path).query)
+    department  = q.get('department', [''])[0] or None
+    location_id = q.get('location_id', [''])[0] or None
+    status      = q.get('status', [''])[0] or None
+    data = employees.list_employees(department=department, location_id=location_id, status=status)
+    send_json(h,200,{'status':'success','data':data})
+
+def get_employee(h, g):
+    row = employees.get_employee(int(g[0]))
+    return send_json(h,200,{'status':'success','data':row}) if row else send_json(h,404,{'status':'error','message':'Employee not found'})
+
+def post_employee(h, g):
+    d = read_json(h)
+    name = (d.get('name') or '').strip()
+    if not name:
+        return send_json(h,400,{'status':'error','message':'Name is required.'})
+    row = employees.create_employee(
+        name=name,
+        department=d.get('department'),
+        location_id=d.get('location_id'),
+        status=d.get('status','active'),
+        email=d.get('email'),
+        phone=d.get('phone')
+    )
+    send_json(h,201,{'status':'success','message':'Employee added successfully.','data':row})
+
+def put_employee(h, g):
+    d = read_json(h)
+    ok = employees.update_employee(int(g[0]), {k:v for k,v in d.items() if v is not None})
+    send_json(h,200,{'status':'success','message':'Employee updated.'}) if ok else send_json(h,404,{'status':'error','message':'Employee not found'})
+
+def del_employee(h, g):
+    ok = employees.delete_employee(int(g[0]))
+    send_json(h,200,{'status':'success','message':'Employee deleted.'}) if ok else send_json(h,404,{'status':'error','message':'Employee not found'})
+
+router.add('GET',    r'/employees',        get_employees)
+router.add('GET',    r'/employees/(\d+)',  get_employee)
+router.add('POST',   r'/employees',        post_employee)
+router.add('PUT',    r'/employees/(\d+)',  put_employee)
+router.add('DELETE', r'/employees/(\d+)',  del_employee)
+
+
+# Auth
+def post_register(h, g):
+    d = read_json(h)
+    first, last = (d.get('FirstName') or '').strip(), (d.get('LastName') or '').strip()
+    email, number = (d.get('Email') or '').strip(), (d.get('number') or '').strip()
+    pw1, pw2 = d.get('new_password') or '', d.get('re_password') or ''
+    if not all([first,last,email,pw1,pw2]): return send_json(h,400,{'status':'error','message':'All fields are required.'})
+    if pw1 != pw2: return send_json(h,400,{'status':'error','message':'Passwords do not match.'})
+    try:
+        users.create_user(first,last,email,number,pw1)
+        send_json(h,201,{'status':'success','message':'User registered successfully!'})
+    except Exception as e:
+        send_json(h,409,{'status':'error','message':'Email already exists.'})
+
+def post_login(h, g):
+    d = read_json(h); email = (d.get('Email') or '').strip(); pw = d.get('password') or ''
+    if not email or not pw: return send_json(h,400,{'status':'error','message':'Email and password required.'})
+    ok = users.check_login(email,pw)
+    send_json(h,200,{'status':'success','message':'Login successful!'}) if ok else send_json(h,401,{'status':'error','message':'Invalid credentials'})
+
+router.add('POST', r'/register', post_register)
+router.add('POST', r'/login',    post_login)
+
+# ---- HTTP handler ----
+class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
-        self.send_response(200)
-        self.end_headers()
+        send_json(self, 200, {'ok': True})
 
-    # Health check
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self.end_headers()
-        response = {
-            'status': 'success',
-            'message': 'Server is running (SQLite connected)!',
-            'db_path': DB_PATH
-        }
-        self.wfile.write(json.dumps(response).encode())
+    def do_GET(self):    self._dispatch('GET')
+    def do_POST(self):   self._dispatch('POST')
+    def do_PUT(self):    self._dispatch('PUT')
+    def do_DELETE(self): self._dispatch('DELETE')
 
-    def do_POST(self):
-        # Parse body (json or form)
-        content_length = int(self.headers.get('Content-Length', 0))
-        body = self.rfile.read(content_length).decode()
-        try:
-            data = json.loads(body) if body else {}
-        except json.JSONDecodeError:
-            data = {k: v[0] for k, v in urllib.parse.parse_qs(body).items()}
+    def _dispatch(self, method):
+        path = urllib.parse.urlparse(self.path).path
+        func, groups = router.match(method, path)
+        if func:
+            try:
+                func(self, groups)
+            except Exception as e:
+                send_json(self, 500, {'status':'error','message':f'Server Error: {e}'})
+        else:
+            send_json(self, 404, {'status':'error','message':'Not found'})
 
-        path = self.path
-        status_code = 200
-        response = {}
+if __name__ == '__main__':
+    from db import DB_PATH
+    import webbrowser, os
 
-        # Connect DB (absolute path)
-        try:
-            conn = get_conn()
-            conn.row_factory = sqlite3.Row
-            cursor = conn.cursor()
-        except sqlite3.Error as err:
-            status_code = 500
-            response = {"status": "error", "message": f"Database Connection Error: {err}"}
-            self._send(status_code, response)
-            return
+    FRONTEND_PATH = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dashboard.html')
+    FRONTEND_URL = f'file:///{os.path.abspath(FRONTEND_PATH)}'.replace('\\', '/')
 
-        try:
-            # ---------------------------
-            # Register
-            # ---------------------------
-            if path == '/register':
-                first  = data.get('FirstName', '').strip()
-                last   = data.get('LastName', '').strip()
-                email  = data.get('Email', '').strip().lower()
-                number = data.get('number', '').strip()
-                new_pw = data.get('new_password', '')
-                re_pw  = data.get('re_password', '')
+    print("✅ AMS backend running at http://localhost:8000")
+    print("📂 Database:", DB_PATH)
+    print("🌐 Opening AMS Dashboard...")
 
-                if not all([first, last, email, new_pw, re_pw]):
-                    status_code = 400
-                    response = {'status': 'error', 'message': 'All fields are required.'}
-                elif new_pw != re_pw:
-                    status_code = 400
-                    response = {'status': 'error', 'message': 'Passwords do not match.'}
-                else:
-                    hashed = password_hash(new_pw)
-                    try:
-                        cursor.execute(
-                            "INSERT INTO users (FirstName, LastName, Email, number, password) VALUES (?, ?, ?, ?, ?)",
-                            (first, last, email, number, hashed)
-                        )
-                        conn.commit()
-                        response = {'status': 'success', 'message': 'User registered successfully!'}
-                    except sqlite3.IntegrityError:
-                        status_code = 409
-                        response = {'status': 'error', 'message': 'Email already exists.'}
+    # Launch frontend automatically
+    webbrowser.open(FRONTEND_URL)
 
-            # ---------------------------
-            # Login
-            # ---------------------------
-            elif path == '/login':
-                email = data.get('Email', '').strip().lower()
-                pw    = data.get('password', '')
-                if not email or not pw:
-                    status_code = 400
-                    response = {'status': 'error', 'message': 'Email and password required.'}
-                else:
-                    hashed = password_hash(pw)
-                    cursor.execute("SELECT 1 FROM users WHERE Email=? AND password=?", (email, hashed))
-                    user = cursor.fetchone()
-                    if user:
-                        response = {'status': 'success', 'message': 'Login successful!'}
-                    else:
-                        status_code = 401
-                        response = {'status': 'error', 'message': 'Invalid email or password.'}
-
-            # ---------------------------
-            # Unknown route
-            # ---------------------------
-            else:
-                status_code = 404
-                response = {'status': 'error', 'message': 'Invalid endpoint.'}
-
-        finally:
-            cursor.close()
-            conn.close()
-
-        self._send(status_code, response)
-
-    # helper to send JSON
-    def _send(self, code, obj):
-        self.send_response(code)
-        self.send_header("Content-Type", "application/json")
-        self.end_headers()
-        self.wfile.write(json.dumps(obj).encode())
-
-if __name__ == "__main__":
-    print("Using database at:", DB_PATH)  # <- watch this path
-    server_address = ('', 8000)
-    httpd = HTTPServer(server_address, RequestHandler)
-    print("✅ Server running on http://localhost:8000 (SQLite)")
-    httpd.serve_forever()
+    srv = HTTPServer(('', 8000), Handler)
+    srv.serve_forever()

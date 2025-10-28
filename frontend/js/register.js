@@ -1,40 +1,50 @@
-// POST /register with keys: FirstName, LastName, Email, number, new_password, re_password
-const form = document.getElementById('registerForm');
+// register.js — send exactly what the backend expects
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registerForm');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const err = (m)=> Swal.fire('Validation', m, 'info');
+  const busy = (on)=> { submitBtn.disabled = on; submitBtn.textContent = on ? 'Creating…' : 'Get Started'; };
 
-function readForm(el){
-  const fd = new FormData(el);
-  return Object.fromEntries(fd.entries());
-}
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const data = readForm(form);
+    const fd = new FormData(form);
+    const FirstName   = (fd.get('FirstName')   || '').trim();
+    const LastName    = (fd.get('LastName')    || '').trim();
+    const Email       = (fd.get('Email')       || '').trim();
+    const number      = (fd.get('number')      || '').trim();
+    const new_password= (fd.get('new_password')|| '').trim();
+    const re_password = (fd.get('re_password') || '').trim();
 
-  if (!data.FirstName || !data.LastName || !data.Email || !data.new_password || !data.re_password) {
-    Swal.fire('Missing info', 'Please fill in all required fields.', 'warning');
-    return;
-  }
-  if (data.new_password !== data.re_password) {
-    Swal.fire('Password mismatch', 'New Password and Re-enter Password must match.', 'error');
-    return;
-  }
-
-  try {
-    const res = await fetch('http://localhost:8000/register', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-
-    if (json.status === 'success') {
-      await Swal.fire('Success', json.message || 'User registered successfully!', 'success');
-      window.location.href = 'login.html';
-    } else {
-      Swal.fire('Oops', json.message || 'Registration failed.', 'error');
+    // frontend validation (mirrors server rules)
+    if (!FirstName || !LastName || !Email || !new_password || !re_password) {
+      return err('Please fill all required fields.');
     }
-  } catch (err) {
-    console.error(err);
-    Swal.fire('Network error', 'Could not reach the server at http://localhost:8000.', 'error');
-  }
+    if (!/^\S+@\S+\.\S+$/.test(Email)) return err('Please enter a valid email address.');
+    if (new_password.length < 6) return err('Password must be at least 6 characters.');
+    if (new_password !== re_password) return err('Passwords do not match.');
+
+    const payload = { FirstName, LastName, Email, number, new_password, re_password };
+
+    try {
+      busy(true);
+      const res = await fetch(`${API}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        await Swal.fire('All set!', 'User registered successfully.', 'success');
+        location.href = 'login.html';
+      } else {
+        Swal.fire('Error', json.message || 'Registration failed.', 'error');
+      }
+    } catch {
+      Swal.fire('Network error', `Could not reach ${API}.`, 'error');
+    } finally {
+      busy(false);
+    }
+  });
 });

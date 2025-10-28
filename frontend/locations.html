@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Locations | AMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/ams-theme.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="assets.html">Assets</a>
+      <a href="employees.html">Employees</a>
+      <a href="locations.html" class="active">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Locations</h2>
+
+    <!-- Filters + Add Button -->
+    <div class="filters-bar">
+      <input type="text" id="fltName" placeholder="Search by name..." />
+      <input type="text" id="fltFloor" placeholder="Filter by floor..." />
+      <input type="text" id="fltRoom" placeholder="Filter by room..." />
+      <div class="actions">
+        <button id="btnAdd" class="btn-primary">Add New</button>
+        <button id="btnExport" class="btn-secondary">Export</button>
+      </div>
+    </div>
+
+    <section class="table-section">
+      <table id="tblLocations">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Floor</th>
+            <th>Room</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="locRows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>const API='http://localhost:8000';</script>
+  <script src="js/session.js"></script>
+  <script>requireAuth();</script>
+  <script>
+    document.getElementById('logout').addEventListener('click', (e)=>{
+      e.preventDefault(); clearAuth(); location.href='login.html';
+    });
+  </script>
+  <script src="js/locations.js"></script>
+</body>
+</html>

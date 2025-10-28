@@ -1,0 +1,280 @@
+/* -------------------------------------------------
+   AMS Portal Theme (Dashboard, Assets, Locations…)
+   ------------------------------------------------- */
+
+/* Reset & base */
+:root {
+  --primary: #0052cc;
+  --primary-hover: #003f99;
+  --text: #222;
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --border: #dcdfe4;
+  --muted: #6b7280;
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* -------------------------------------------------
+   Top Navigation Bar
+   ------------------------------------------------- */
+.top-nav {
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.top-nav .logo {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+.top-nav nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.top-nav nav a:hover,
+.top-nav nav a.active {
+  background: var(--primary-hover);
+}
+
+/* -------------------------------------------------
+   Layout Containers
+   ------------------------------------------------- */
+.content {
+  max-width: 1200px;
+  margin: 32px auto;
+  background: var(--card);
+  padding: 24px 28px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.content h2 {
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* -------------------------------------------------
+   Filters Bar
+   ------------------------------------------------- */
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #f9fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.filters-bar select,
+.filters-bar input[type="text"],
+.filters-bar input[type="date"] {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.filters-bar select:focus,
+.filters-bar input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
+}
+
+.filters-bar .actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* -------------------------------------------------
+   Buttons
+   ------------------------------------------------- */
+button,
+.btn-primary,
+.btn-secondary {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 8px 16px;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-hover);
+  color: #fff;
+  border-color: var(--primary-hover);
+}
+
+/* -------------------------------------------------
+   Table Styling
+   ------------------------------------------------- */
+.table-section {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f2f4f8;
+  font-weight: 600;
+  color: #333;
+}
+
+td {
+  color: #444;
+}
+
+td[contenteditable] {
+  background: #fffdf0;
+}
+
+.actions button {
+  margin-right: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: var(--primary-hover);
+}
+
+/* -------------------------------------------------
+   KPI Cards (Dashboard)
+   ------------------------------------------------- */
+.kpi {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.kpi::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--primary);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+
+/* KPI Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* -------------------------------------------------
+   Chart Section
+   ------------------------------------------------- */
+.table-section.card {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* inputs/selects when a row is in edit mode */
+table .in {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font: inherit;
+  background: #fff;
+}
+table .in:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,82,204,.12);
+}
+
+.swal-wide {
+  max-width: 720px !important;
+}
+
+
+/* -------------------------------------------------
+   Responsive tweaks
+   ------------------------------------------------- */
+@media (max-width: 700px) {
+  .top-nav { flex-direction: column; height: auto; padding: 8px 0; }
+  .content { margin: 16px; padding: 16px; }
+  .filters-bar { flex-direction: column; align-items: stretch; }
+  .filters-bar .actions { margin-left: 0; width: 100%; justify-content: flex-end; }
+}
