@@ -49,12 +49,17 @@ ams.db
 ## How to Set Up and Run the Application
 
 ### 1️ - Clone the Repository
+```
 git clone https://github.com/sahilkumar-sk/Asset-Management-System.git
 cd AMS Project
+```
 
 ### 2️ - Create the Database
+```
 cd backend
 python db_setup.py
-
+```
 ### 3️ - Start the Backend Server
+```
 python server.py
+```
