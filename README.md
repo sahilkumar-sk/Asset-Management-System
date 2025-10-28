@@ -3,7 +3,7 @@
 
 ---
 
-## 📘 Overview
+## Overview
 AMS (Asset Management System) is a lightweight web application built using a **Python HTTPServer + SQLite backend** and a **HTML/CSS/JS frontend**.
 
 For **Milestone 2**, the focus modules are:
@@ -14,7 +14,7 @@ Both modules are fully functional with create, read, update, and delete (CRUD) o
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 | Layer | Technology |
 |-------|-------------|
 | Backend | Python 3 (HTTPServer), SQLite |
@@ -24,7 +24,7 @@ Both modules are fully functional with create, read, update, and delete (CRUD) o
 
 ---
 
-## 🗂 Project Structure
+## Project Structure
 ```
 backend/
 server.py
