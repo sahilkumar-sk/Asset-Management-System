@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AMS Portal – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="shell">
+    <!-- LEFT: form card -->
+    <div class="left">
+      <div class="card">
+        <div class="brand">
+          <h1>AMS Portal</h1>
+          <p>Asset Management System</p>
+          <div class="divider"></div>
+        </div>
+
+        <div class="section-title">Login</div>
+
+        <form id="loginForm" novalidate>
+          <label for="email">Email id</label>
+          <input id="email" name="Email" type="email" placeholder="you@example.com" required />
+
+          <label for="pass">Password</label>
+          <input id="pass" name="password" type="password" placeholder="Password" required />
+
+          <div class="row">
+            <label class="remember"><input type="checkbox" id="remember" /> Remember Me</label>
+            <a class="link" href="#">Forgot Password?</a>
+          </div>
+
+          <button type="submit">Login</button>
+          <div class="helper">Don’t have an Account? <a class="link" href="register.html">Create an Account</a></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT: image mosaic -->
+    <div class="gallery" aria-hidden="true">
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1593642634443-44adaa06623a?q=80&w=1200&auto=format&fit=crop');"></div>
+
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop');"></div>
+
+
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop');"></div>
+      <div class="tile" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop');"></div>
+    </div>
+  </div>
+
+  <script>const API='http://localhost:5000';</script>
+  <script src="js/session.js"></script>
+  <script>redirectIfAuthed();</script>
+  <script src="js/login.js"></script>
+  <script src="js/config.js"></script>
+</body>
+</html>

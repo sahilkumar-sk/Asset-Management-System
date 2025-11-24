@@ -1,14 +1,29 @@
 from db import get_conn
-from utils import row_to_dict
 import sqlite3
 
-def list_employees(department: str | None = None, location_id: str | int | None = None, status: str | None = None):
-    conn = get_conn(); cur = conn.cursor()
+# ---- Utility ----
+def _row_to_dict(row):
+    return dict(row) if row else None
+
+
+# ---- CRUD: Employees ----
+def list_employees(department: str | None = None,
+                   location_id: str | int | None = None,
+                   status: str | None = None):
+    conn = get_conn()
+    cur = conn.cursor()
     try:
         filters, params = [], []
-        if department:  filters.append("e.department = ?"); params.append(department)
-        if location_id: filters.append("e.location_id = ?"); params.append(location_id)
-        if status:      filters.append("e.status = ?");     params.append(status)
+        if department:
+            filters.append("e.department = ?")
+            params.append(department)
+        if location_id:
+            filters.append("e.location_id = ?")
+            params.append(location_id)
+        if status:
+            filters.append("e.status = ?")
+            params.append(status)
+
         where = ("WHERE " + " AND ".join(filters)) if filters else ""
 
         if _has_column(cur, 'assets', 'assigned_to'):
@@ -27,8 +42,10 @@ def list_employees(department: str | None = None, location_id: str | int | None 
     finally:
         conn.close()
 
+
 def get_employee(emp_id: int):
-    conn = get_conn(); cur = conn.cursor()
+    conn = get_conn()
+    cur = conn.cursor()
     try:
         if _has_column(cur, 'assets', 'assigned_to'):
             sql = """
@@ -39,12 +56,15 @@ def get_employee(emp_id: int):
         else:
             sql = "SELECT e.*, 0 AS assigned_count FROM employees e WHERE e.id=?"
         cur.execute(sql, (emp_id,))
-        return row_to_dict(cur.fetchone())
+        return _row_to_dict(cur.fetchone())
     finally:
         conn.close()
 
-def create_employee(name, department=None, location_id=None, status='active', email=None, phone=None):
-    conn = get_conn(); cur = conn.cursor()
+
+def create_employee(name, department=None, location_id=None,
+                    status='active', email=None, phone=None):
+    conn = get_conn()
+    cur = conn.cursor()
     try:
         cur.execute("""
             INSERT INTO employees (name, department, location_id, status, email, phone)
@@ -58,22 +78,30 @@ def create_employee(name, department=None, location_id=None, status='active', em
     finally:
         conn.close()
 
+
 def update_employee(emp_id: int, data: dict) -> bool:
-    if not data: return False
-    conn = get_conn(); cur = conn.cursor()
+    if not data:
+        return False
+
+    conn = get_conn()
+    cur = conn.cursor()
     try:
-        fields = ['name','department','location_id','status','email','phone']
+        fields = ['name', 'department', 'location_id', 'status', 'email', 'phone']
         updates = {k: v for k, v in data.items() if k in fields}
-        if not updates: return False
+        if not updates:
+            return False
+
         set_clause = ", ".join([f"{k}=?" for k in updates.keys()])
-        cur.execute(f"UPDATE employees SET {set_clause} WHERE id=?", list(updates.values())+[emp_id])
+        cur.execute(f"UPDATE employees SET {set_clause} WHERE id=?", list(updates.values()) + [emp_id])
         conn.commit()
         return cur.rowcount > 0
     finally:
         conn.close()
 
+
 def delete_employee(emp_id: int) -> bool:
-    conn = get_conn(); cur = conn.cursor()
+    conn = get_conn()
+    cur = conn.cursor()
     try:
         cur.execute("DELETE FROM employees WHERE id=?", (emp_id,))
         conn.commit()
@@ -81,7 +109,8 @@ def delete_employee(emp_id: int) -> bool:
     finally:
         conn.close()
 
-# ---- helpers ----
+
+# ---- Helpers ----
 def _has_column(cur: sqlite3.Cursor, table: str, col: str) -> bool:
     cur.execute(f"PRAGMA table_info({table})")
     return any(row[1] == col for row in cur.fetchall())

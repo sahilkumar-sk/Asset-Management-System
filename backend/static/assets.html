@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assets | AMS</title>
+
+  <link rel="stylesheet" href="css/ams-theme.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+  <!-- Modal styling -->
+  <style>
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-dialog {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px 22px 16px;
+      min-width: 320px;
+      max-width: 480px;
+      box-shadow: 0 10px 25px rgba(15,23,42,.25);
+    }
+    .modal-dialog h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+    .modal-dialog form {
+      display: grid;
+      gap: 10px;
+    }
+    .modal-dialog label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .modal-dialog input,
+    .modal-dialog select {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid #dcdfe4;
+      font: inherit;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="assets.html" class="active">Assets</a>
+      <a href="employees.html">Employees</a>
+      <a href="locations.html">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Assets</h2>
+
+    <div class="filters-bar">
+      <select id="fltAssetID"><option value="">Asset ID: All</option></select>
+      <select id="fltAssetType"><option value="">Asset Type: All</option></select>
+      <select id="fltAssetGroup"><option value="">Asset Group: All</option></select>
+
+      <select id="fltAssetStatus">
+        <option value="">Status: All</option>
+        <option value="available">Available</option>
+        <option value="in_use">In Use</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="damaged">Damaged</option>
+      </select>
+
+      <input type="date" id="fltDate" />
+
+      <div class="actions">
+        <button id="btnAdd" class="btn-primary">Add New</button>
+        <button id="btnExport" class="btn-secondary">Export</button>
+      </div>
+    </div>
+
+    <section class="table-section">
+      <table id="tblAssets">
+        <thead>
+          <tr>
+            <th>Asset ID</th>
+            <th>Asset Name</th>
+            <th>Category</th>
+            <th>Sub Category</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="assetRows"></tbody>
+      </table>
+    </section>
+
+    <!-- Add/Edit Asset Modal -->
+    <div id="assetModal" class="modal-backdrop" style="display:none;">
+      <div class="modal-dialog">
+        <h3 id="assetModalTitle">Add Asset</h3>
+
+        <form id="assetForm">
+          <input type="hidden" id="assetId" />
+
+          <div>
+            <label for="assetName">Asset Name</label>
+            <input id="assetName" required />
+          </div>
+
+          <div>
+            <label for="assetCategory">Category</label>
+            <input id="assetCategory" required />
+          </div>
+
+          <div>
+            <label for="assetSubCategory">Sub Category (optional)</label>
+            <input id="assetSubCategory" />
+          </div>
+
+          <div>
+            <label for="assetLocationId">Location ID (optional)</label>
+            <input id="assetLocationId" />
+          </div>
+
+          <div>
+            <label for="assetStatus">Status</label>
+            <select id="assetStatus">
+              <option value="available">Available</option>
+              <option value="in_use">In Use</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="damaged">Damaged</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="assetModalCancel" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary">Save</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/session.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/assets.js"></script>
+
+  <script>
+    document.getElementById('logout').addEventListener('click', (e) => {
+      e.preventDefault();
+      clearAuth();
+      location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>

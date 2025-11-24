@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employees | AMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Main Theme -->
+  <link rel="stylesheet" href="css/ams-theme.css" />
+
+  <!-- Libraries -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Page Script -->
+  <script defer src="js/employees.js"></script>
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="logo">AMS</div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="assets.html">Assets</a>
+      <a href="employees.html" class="active">Employees</a>
+      <a href="locations.html">Locations</a>
+      <a href="#" id="logout">Logout</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h2>Employees</h2>
+
+    <!-- Filters / Actions bar (Add uses modal) -->
+    <div class="filters-bar">
+      <select id="fltStatus">
+        <option value="">Status: All</option>
+        <option value="active">active</option>
+        <option value="inactive">inactive</option>
+      </select>
+
+      <div class="actions">
+        <button id="btnAdd" class="btn-primary" type="button">Add</button>
+        <!-- Export button is injected by JS -->
+      </div>
+    </div>
+
+    <!-- Employees Table -->
+    <section class="table-section">
+      <table id="tblEmployees">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Assigned</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="empRows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Auth / Config -->
+  <script src="js/session.js"></script>
+  <script src="js/config.js"></script>
+  <script>
+    requireAuth();
+
+    document.getElementById('logout').addEventListener('click', (e) => {
+      e.preventDefault();
+      clearAuth();
+      location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

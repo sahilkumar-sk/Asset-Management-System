@@ -1,0 +1,395 @@
+/* -------------------------------------------------
+   AMS Portal Theme (Dashboard, Assets, Locations…)
+   ------------------------------------------------- */
+
+/* ==================== Root Variables ==================== */
+:root {
+  --primary: #0052cc;
+  --primary-hover: #003f99;
+  --text: #222;
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --border: #dcdfe4;
+  --muted: #6b7280;
+  --radius: 8px;
+}
+
+/* ==================== Base ==================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ==================== Navigation Bar ==================== */
+.top-nav {
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.top-nav .logo {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+.top-nav nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.top-nav nav a:hover,
+.top-nav nav a.active {
+  background: var(--primary-hover);
+}
+
+/* ==================== Content Containers ==================== */
+.content {
+  max-width: 1200px;
+  margin: 32px auto;
+  background: var(--card);
+  padding: 24px 28px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.content h2 {
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* ==================== Filters Bar ==================== */
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #f9fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.filters-bar select,
+.filters-bar input[type="text"],
+.filters-bar input[type="date"],
+.filters-bar input:not([type]) {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.filters-bar select:focus,
+.filters-bar input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
+}
+
+.filters-bar .actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* ==================== Buttons ==================== */
+button,
+.btn-primary,
+.btn-secondary {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 8px 16px;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-hover);
+  color: #fff;
+  border-color: var(--primary-hover);
+}
+
+/* Export button in filters bar (so it’s always visible) */
+#btnExport {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+#btnExport:hover {
+  background: var(--primary-hover);
+  color: #fff;
+  border-color: var(--primary-hover);
+}
+
+/* ==================== Tables ==================== */
+.table-section {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f2f4f8;
+  font-weight: 600;
+  color: #333;
+}
+
+td {
+  color: #444;
+}
+
+td[contenteditable] {
+  background: #fffdf0;
+}
+
+/* -------------------------------------------------
+   DASHBOARD STYLES
+   ------------------------------------------------- */
+
+/* ===== Container & Header ===== */
+.dashboard-container {
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
+  background-color: #f6f7fb;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dashboard-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+}
+
+.dashboard-header .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboard-header input[type="date"],
+.dashboard-header button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.dashboard-header button {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-header button:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 2px 6px rgba(0, 82, 204, 0.3);
+}
+
+/* ===== KPI Section ===== */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 4px solid var(--primary);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-card h3 {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.kpi-card span {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* KPI color accents */
+.kpi-card:nth-child(1) { border-bottom-color: #0052cc; } /* Total */
+.kpi-card:nth-child(2) { border-bottom-color: #28a745; } /* Assigned */
+.kpi-card:nth-child(3) { border-bottom-color: #6c757d; } /* Unassigned */
+.kpi-card:nth-child(4) { border-bottom-color: #ffc107; } /* Maintenance */
+.kpi-card:nth-child(5) { border-bottom-color: #dc3545; } /* Damaged */
+
+/* ===== Charts ===== */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.chart-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.chart-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.chart-box h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 320px !important;
+}
+
+/* ===== Optional Toolbar Above KPIs ===== */
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.toolbar button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.toolbar button:hover {
+  background: var(--primary-hover);
+}
+
+/* ==================== Action Icon Buttons ==================== */
+.actions button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  color: #fff;
+}
+
+.actions button i {
+  font-size: 14px;
+}
+
+/* Individual colors */
+.btn-view   { background: #0d6efd; }  /* Blue */
+.btn-edit   { background: #fd7e14; }  /* Orange */
+.btn-assign { background: #198754; }  /* Green */
+.btn-delete { background: #dc3545; }  /* Red */
+
+.btn-view:hover   { background: #0b5ed7; }
+.btn-edit:hover   { background: #e56f12; }
+.btn-assign:hover { background: #157347; }
+.btn-delete:hover { background: #bb2d3b; }
+
+/* ==================== Status Badges ==================== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.emp-status-active {
+  background: #198754;
+  color: #fff;
+}
+
+.emp-status-inactive {
+  background: #6b7280;
+  color: #fff;
+}
