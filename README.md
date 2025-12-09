@@ -1,33 +1,29 @@
 # AMS – Asset Management System  
-**Milestone 3 Submission**
+**Milestone 3 Submission**
 
 ---
 
 ## Overview
-AMS (Asset Management System) is a fully functional web application built using a **Flask + SQLite backend** and a **HTML/CSS/JS frontend**.
-
-For **Milestone 3**, the system now includes:
-- **Authentication (Login & Registration)**
-- **Assets Management (Full CRUD + assignment)**
-- **Employees Management (Full CRUD + assigned assets tracking)**
-- **Locations Management (Full CRUD)**
-- **Dashboard Analytics (Charts + KPIs)**
-
-All modules interact with a live Flask REST API and are fully integrated into the system.
+AMS (Asset Management System) is a full‑stack web application built using a **Flask + SQLite backend** and a **HTML/CSS/JS frontend**.  The system allows an organisation to track its **assets**, manage **employees** and **locations**, assign assets to employees, and visualise key statistics on a dashboard.  Milestone 3 extends the project by adding authentication, a dashboard with charts, and a complete employees module, while refining the assets and locations modules.
 
 ---
 
 ## Technologies Used
-| Layer | Technology |
-|-------|-------------|
-| Backend | Python 3, Flask, SQLite |
-| Frontend | HTML, CSS, jQuery, SweetAlert2, Chart.js |
-| Styling | `ams-theme.css` |
-| Database | `ams.db` (SQLite) |
+
+| Layer     | Technology                                      |
+|----------|--------------------------------------------------|
+| Backend  | Python 3, Flask micro‑framework, SQLite database |
+| Frontend | HTML5, CSS3, JavaScript (jQuery), SweetAlert2    |
+| Charts   | Chart.js (bar and donut charts)                  |
+| Styling  | Custom **ams‑theme.css**, FontAwesome icons      |
+| Database | SQLite file (`ams.db`)                           |
 
 ---
 
 ## Project Structure
+The repository is organised into a `backend` package and a collection of static files at the top level:
+
+
 
 ```
 backend/
