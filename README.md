@@ -1,60 +1,82 @@
 # AMS – Asset Management System  
-**Milestone 2 Submission**
+**Milestone 3 Submission**
 
 ---
 
 ## Overview
-AMS (Asset Management System) is a lightweight web application built using a **Python HTTPServer + SQLite backend** and a **HTML/CSS/JS frontend**.
+AMS (Asset Management System) is a fully functional web application built using a **Flask + SQLite backend** and a **HTML/CSS/JS frontend**.
 
-For **Milestone 2**, the focus modules are:
-- **Assets Management**
-- **Locations Management**
+For **Milestone 3**, the system now includes:
+- **Authentication (Login & Registration)**
+- **Assets Management (Full CRUD + assignment)**
+- **Employees Management (Full CRUD + assigned assets tracking)**
+- **Locations Management (Full CRUD)**
+- **Dashboard Analytics (Charts + KPIs)**
 
-Both modules are fully functional with create, read, update, and delete (CRUD) operations connected to a live REST API.
+All modules interact with a live Flask REST API and are fully integrated into the system.
 
 ---
 
 ## Technologies Used
 | Layer | Technology |
 |-------|-------------|
-| Backend | Python 3 (HTTPServer), SQLite |
-| Frontend | HTML, CSS, jQuery, SweetAlert2 |
+| Backend | Python 3, Flask, SQLite |
+| Frontend | HTML, CSS, jQuery, SweetAlert2, Chart.js |
 | Styling | `ams-theme.css` |
 | Database | `ams.db` (SQLite) |
 
 ---
 
 ## Project Structure
+
 ```
 backend/
-server.py
-router.py
-http_helpers.py
-utils.py
-db.py
-db_setup.py
-repositories/
-    assets.py
-    employees.py
-    locations.py
-    users.py
-frontend/
-css/
-    ams-theme.css
-    auth.css
-js/
-    assets.js
-    locations.js
-    dashboard.js
-    employees.js
-    login.js
-    register.js
-assets.html
-locations.html
-employees.html
-dashboard.html
-login.html
-register.html
+│
+├── app.py                 # Main server entry point
+├── db.py                  # SQLite connection handler
+├── db_setup.py            # Creates initial database + tables
+│
+├── ams.db                 # SQLite database (auto-generated)
+├── ams.db-shm             # SQLite runtime file
+├── ams.db-wal             # SQLite WAL file
+│
+├── routes/                # All API route handlers
+│     ├── assets.py
+│     ├── employees.py
+│     ├── locations.py
+│     ├── users.py
+│     └── dashboard.py
+│
+├── repositories/          # Database query logic
+│     ├── assets.py
+│     ├── employees.py
+│     ├── locations.py
+│     └── users.py
+│
+├── services/              # Business logic (Dashboard calculations)
+│     └── dashboard.py
+│
+└── static/                # Frontend (served by backend)
+      ├── css/
+      │     ├── ams-theme.css
+      │     └── auth.css
+      │
+      ├── js/
+      │     ├── assets.js
+      │     ├── employees.js
+      │     ├── locations.js
+      │     ├── dashboard.js
+      │     ├── login.js
+      │     ├── register.js
+      │     ├── session.js
+      │     └── config.js
+      │
+      ├── assets.html
+      ├── dashboard.html
+      ├── employees.html
+      ├── locations.html
+      ├── login.html
+      └── register.html
 ```
 
 ## How to Set Up and Run the Application
