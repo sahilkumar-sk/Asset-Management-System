@@ -8,6 +8,15 @@ AMS (Asset Management System) is a full‑stack web application built using a **
 
 ---
 
+## Features
+- Asset, Employee, and Location management (CRUD)
+- Asset assignment to employees
+- User authentication (login/register/session)
+- Interactive dashboard with charts
+- Modular Flask backend architecture
+
+---
+
 ## Technologies Used
 
 | Layer     | Technology                                      |
