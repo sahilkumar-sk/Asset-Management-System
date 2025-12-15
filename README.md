@@ -90,5 +90,5 @@ python db_setup.py
 ```
 ### 3️ - Start the Backend Server
 ```
-python server.py
+python app.py  # Main server entry point
 ```
