@@ -17,6 +17,14 @@ AMS (Asset Management System) is a full‑stack web application built using a **
 
 ---
 
+## Database Design
+- Assets: name, category, status, location_id, assigned_employee_id
+- Employees: name, department, email, phone, status, location_id
+- Locations: name, description
+- Users: email, password_hash
+
+---
+
 ## Technologies Used
 
 | Layer     | Technology                                      |
