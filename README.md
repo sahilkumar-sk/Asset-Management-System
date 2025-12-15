@@ -91,6 +91,23 @@ backend/
       ├── login.html
       └── register.html
 ```
+---
+
+## Screenshots
+
+### Login & Authentication
+![Login Page](screenshots/login.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Assets Management
+![Assets](screenshots/assets.png)
+
+### Employees Management
+![Employees](screenshots/employees.png)
+
+---
 
 ## How to Set Up and Run the Application
 
