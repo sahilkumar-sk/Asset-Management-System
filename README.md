@@ -90,6 +90,8 @@ backend/
       ├── locations.html
       ├── login.html
       └── register.html
+├── requirements.txt
+
 ```
 ---
 
@@ -116,13 +118,17 @@ backend/
 git clone https://github.com/sahilkumar-sk/Asset-Management-System.git
 cd Asset-Management-System
 ```
-
-### 2️ - Create the Database
+### 2️ - Install Backend Dependencies
 ```
 cd backend
+pip install -r requirements.txt
+```
+
+### 3 - Create the Database
+```
 python db_setup.py
 ```
-### 3️ - Start the Backend Server
+### 4️ - Start the Backend Server
 ```
 python app.py  # Main server entry point
 ```
